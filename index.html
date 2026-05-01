@@ -7,10 +7,13 @@
   <h1>🪄 Jarvis (24/7 in browser)</h1>
   <p>Status: <span id="status">Connecting...</span></p>
 
-  <script src="https://cdn.retellai.com/retell-sdk.js"></script>
+  <!-- Correct Retell SDK script -->
+  <script src="https://cdn.jsdelivr.net/npm/retell-sdk@latest/dist/retell-sdk.min.js"></script>
+
   <script>
-    const RETELL_API_KEY = "key_32ff3ad489f734c56514f9010ecc";
-    const AGENT_ID = "agent_f5330dd54d35e2ad3ec55bf7f5";
+    // Replace these with your real keys from Retell dashboard
+    const RETELL_API_KEY = "key_32ff3ad489f734c56514f9010ecc";   // API Key from Retell → API Keys
+    const AGENT_ID = "agent_f5330dd54d35e2ad3ec55bf7f5";       // Agent ID from your agent page
 
     Retell.init({
       apiKey: RETELL_API_KEY,
