@@ -7,25 +7,26 @@
   <h1>🪄 Jarvis (24/7 in browser)</h1>
   <p>Status: <span id="status">Connecting...</span></p>
 
-  <!-- Correct Retell SDK script -->
+  <!-- Official Retell SDK -->
   <script src="https://cdn.jsdelivr.net/npm/retell-sdk@latest/dist/retell-sdk.min.js"></script>
 
   <script>
-    // Replace these with your real keys from Retell dashboard
+    // Replace these with your real values from Retell dashboard
     const RETELL_API_KEY = "key_32ff3ad489f734c56514f9010ecc";   // API Key from Retell → API Keys
     const AGENT_ID = "agent_f5330dd54d35e2ad3ec55bf7f5";       // Agent ID from your agent page
 
-    Retell.init({
+    // Important: use lowercase "retellSdk" and call .init()
+    retellSdk.init({
       apiKey: RETELL_API_KEY,
       agentId: AGENT_ID
     });
 
-    Retell.onReady(() => {
+    retellSdk.onReady(() => {
       document.getElementById("status").innerText = "Connected. Say 'Wake up, Jarvis' to talk.";
-      Retell.startCall();
+      retellSdk.startCall();
     });
 
-    Retell.onError((err) => {
+    retellSdk.onError((err) => {
       document.getElementById("status").innerText = "Error: " + err.message;
     });
   </script>
