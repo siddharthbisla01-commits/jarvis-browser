@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jarvis Always‑On</title>
+</head>
+<body style="text-align:center; font-family:sans-serif">
+  <h1>🪄 Jarvis (24/7 in browser)</h1>
+  <p>Status: <span id="status">Connecting...</span></p>
+
+  <script src="https://cdn.retellai.com/retell-sdk.js"></script>
+  <script>
+    const RETELL_API_KEY = "your_retell_api_key_here"; // CHANGE THIS
+    const AGENT_ID = "your_jarvis_agent_id_here";      // CHANGE THIS
+
+    Retell.init({
+      apiKey: RETELL_API_KEY,
+      agentId: AGENT_ID,
+    });
+
+    Retell.onReady(() => {
+      document.getElementById("status").innerText = "Connected. Say 'Wake up, Jarvis' to talk.";
+      Retell.startCall();
+    });
+
+    Retell.onError((err) => {
+      document.getElementById("status").innerText = "Error: " + err.message;
+    });
+  </script>
+</body>
+</html>
