@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🎙️ Jarvis (auto‑listen)</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f0f0f0;
+    }
+    #status {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎙️ Jarvis – Always Listening</h1>
+  <p id="status">Speak into the mic: <b>hello jarvis</b></p>
+
+  <script>
+    let recognition;
+
+    // Check for SpeechRecognition
+    if ("SpeechRecognition" in window || "webkitSpeechRecognition" in window) {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = "en-IN";
+    } else {
+      document.getElementById("status").innerText = "Speech recognition not supported in this browser.";
+    }
+
+    // Start listening immediately when page loads
+    window.onload = function () {
+      if (!recognition) return;
+      document.getElementById("status").innerText = "Jarvis is listening… say: hello jarvis";
+      try {
+        recognition.start();
+      } catch (e) {
+        document.getElementById("status").innerText = "Microphone access denied or not supported.";
+      }
+    };
+
+    // When speech is recognized
+    recognition.onresult = function(event) {
+      const last = event.results.length - 1;
+      const transcript = event.results[last][0].transcript.toLowerCase();
+      document.getElementById("status").innerText = "You said: " + transcript;
+
+      if (transcript.includes("hello") && transcript.includes("jarvis")) {
+        speak("Hello! I'm Jarvis, your options advisor. You can ask me where to buy or sell options.");
+      } else if (transcript.includes("buy") && transcript.includes("call")) {
+        speak("Jarvis suggests: If Nifty is above 22,000 and trend is bullish, consider buying a slightly OTM call with strike near current ATM. Place stop‑loss at 10% below entry and a target near 15–20%. Do not risk more than 2% of your capital on one option.");
+      } else if (transcript.includes("sell") || transcript.includes("exit")) {
+        speak("You can exit the call when either your target is hit or your stop‑loss is triggered. Avoid holding options till expiry if premium becomes very low.");
+      } else if (transcript.includes("help") || transcript.includes("suggest")) {
+        speak("Jarvis can help you decide where to buy and sell options. Ask: Where should I buy Nifty call? Or: Where should I exit this option?");
+      }
+    };
+
+    recognition.onerror = function(event) {
+      if (event.error === "not-allowed" || event.error === "not-allowed-exception") {
+        document.getElementById("status").innerText = "Microphone not allowed. Please allow microphone in the browser.";
+      } else if (event.error === "no-speech") {
+        // Just keep listening
+      } else {
+        console.error("Speech error:", event.error);
+      }
+    };
+
+    recognition.onend = function() {
+      // Restart if it stopped (for continuous listening)
+      try {
+        recognition.start();
+      } catch (e) {
+        // Ignore
+      }
+    };
+
+    // Text‑to‑speech
+    function speak(text) {
+      if ("speechSynthesis" in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        console.log("Speech synthesis not supported in this browser.");
+      }
+    }
+  </script>
+</body>
+</html>
